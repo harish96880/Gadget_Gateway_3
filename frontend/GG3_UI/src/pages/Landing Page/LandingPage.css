@@ -1,0 +1,42 @@
+#lp-sec-01{
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(rgba(0,0,0,.9), rgba(0,0,0,0.4)),url("../../assets/images/LandingImage03.jpg");
+    background-size: cover ;
+    background-position: center;
+    flex-direction: column;
+}
+
+.lp-content {
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#hero-text {
+    font-size: 3.5vw;
+    margin-left: 50px;
+    font-weight: 900;
+}
+
+#hero-desc {
+    font-size: 1.7vw;
+    margin-left: 50px;
+    font-weight: 200;
+    color: white;
+}
+
+#register-btn{
+    width: 10vw;
+    height: 5vh;
+    background-color: rgb(255, 98, 0);
+    font-size: 1.2vw;
+    border: none;
+    color: white;
+    font-weight: 500;
+    border-radius: 32px;
+    margin-left: 50px;
+    box-shadow: 1px 2px 15px 1px rgb(45, 42, 42);
+}

@@ -1,0 +1,8 @@
+#sign-up-btn{
+    background-color: rgb(255, 98, 0);
+    border-radius: 32px;
+    width: 5vw;
+    text-align: center;
+    font-weight: 700;
+    box-shadow: 1px 2px 15px 1px rgb(45, 42, 42);
+}
