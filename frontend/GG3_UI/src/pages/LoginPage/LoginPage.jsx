@@ -1,6 +1,7 @@
 import React from "react";
 import "./LoginPage.css";
 import CustomNavbar from "../../components/CustomNavbar";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   return (
@@ -56,9 +57,9 @@ function LoginPage() {
         </form>
         <div className="text-center text-white">
           New to GG3?
-          <a href="#" style={{ color: "orange" }}>
+          <Link to="/signup" style={{ color: "orange" }}>
             Register here
-          </a>
+          </Link>
         </div>
       </div>
     </section>
