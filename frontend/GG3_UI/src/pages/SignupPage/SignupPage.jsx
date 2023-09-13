@@ -9,6 +9,7 @@ function SignupPage() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailExist, setEmailExist] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,7 +27,13 @@ function SignupPage() {
           email,
           password,
         })
-        .then(navigate("/login"))
+        .then((res) => {
+          if (res.data === "already_exist") {
+            return setEmailExist(true);
+          }
+          setEmailExist(false);
+          navigate("/login");
+        })
         .catch((err) => console.log(err));
     }
   };
@@ -35,7 +42,6 @@ function SignupPage() {
     const newPassword = e.target.value;
     setPassword(newPassword);
 
-    // Password validation
     const errors = [];
     if (newPassword.length < 6 || newPassword.length > 12) {
       errors.push("Password must be between 6 and 12 characters.");
@@ -66,12 +72,12 @@ function SignupPage() {
             Signup with your social media account or email address
           </p>
           <div className="social-btn text-center">
-            <a href="#" className="btn btn-primary btn-lg">
+            {/* <a href="#" className="btn btn-primary btn-lg">
               <i className="fa fa-facebook" /> Facebook
             </a>
             <a href="#" className="btn btn-info btn-lg">
               <i className="fa fa-twitter" /> Twitter
-            </a>
+            </a> */}
             <a href="#" className="btn btn-danger btn-lg">
               <i className="fa fa-google" /> Google
             </a>
@@ -131,6 +137,11 @@ function SignupPage() {
                 </li>
               ))}
             </ul>
+            {emailExist && (
+              <div className="alert alert-danger" role="alert">
+                <strong>Already Exist!</strong> Try login.
+              </div>
+            )}
           </div>
           <div className="form-group">
             <button

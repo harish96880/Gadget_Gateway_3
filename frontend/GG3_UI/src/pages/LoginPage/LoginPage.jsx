@@ -11,6 +11,12 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -41,12 +47,12 @@ function LoginPage() {
             Log in with your social media account or email address
           </p>
           <div className="social-btn text-center">
-            <a href="#" className="btn btn-primary btn-lg">
+            {/* <a href="#" className="btn btn-primary btn-lg">
               <i className="fa fa-facebook" /> Facebook
             </a>
             <a href="#" className="btn btn-info btn-lg">
               <i className="fa fa-twitter" /> Twitter
-            </a>
+            </a> */}
             <a href="#" className="btn btn-danger btn-lg">
               <i className="fa fa-google" /> Google
             </a>
@@ -67,14 +73,16 @@ function LoginPage() {
           </div>
           <div className="form-group">
             <input
-              type="password"
-              className="form-control input-lg text-dark"
+              type={showPassword ? "text" : "password"}
+              className="form-control input-lg text-dark mb-2"
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required="required"
             />
+            <input type="checkbox" onChange={toggleShowPassword} />
+            &nbsp; Show password
           </div>
           <div className="form-group">
             <button

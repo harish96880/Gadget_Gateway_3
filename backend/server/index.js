@@ -124,29 +124,34 @@ app.get("/dashboard", verifyUser, (req, res) => {
 
 app.post("/register", (req, res) => {
   const { firstName, lastName, email, password } = req.body;
-  bcrypt
-    .hash(password, 10)
-    .then((hash) => {
-      UserModel.create({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: hash,
-      })
-        .then((user) => {
-          const token = new Token({
-            userId: user._id,
-            token: crypto.randomBytes(16).toString("hex"),
-          });
-          token.save();
-          console.log(token);
-          const link = `http://localhost:8000/users/confirm/${token.token}`;
-          verifyEmail(user.email, link);
-          res.json("Email Sent");
+  UserModel.findOne({ email: email }).then((exist) => {
+    if (exist) return res.json("already_exist");
+    else {
+      bcrypt
+        .hash(password, 10)
+        .then((hash) => {
+          UserModel.create({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: hash,
+          })
+            .then((user) => {
+              const token = new Token({
+                userId: user._id,
+                token: crypto.randomBytes(16).toString("hex"),
+              });
+              token.save();
+              console.log(token);
+              const link = `http://localhost:8000/users/confirm/${token.token}`;
+              verifyEmail(user.email, link);
+              res.json("Email Sent");
+            })
+            .catch((err) => res.json(err));
         })
-        .catch((err) => res.json(err));
-    })
-    .catch((err) => console.log(err));
+        .catch((err) => console.log(err));
+    }
+  });
 });
 
 app.post("/login", (req, res) => {
