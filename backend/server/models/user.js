@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "visitor",
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const UserModel = mongoose.model("Users-GG3", UserSchema);

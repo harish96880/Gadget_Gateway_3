@@ -19,10 +19,13 @@ function LoginPage() {
         password,
       })
       .then((res) => {
-        if (res.data.role === "admin") {
+        console.log(res.data);
+        if (res.data.role === "admin" && res.data.verified) {
           navigate("/dashboard");
-        } else {
+        } else if (res.data.verified) {
           navigate("/home");
+        } else {
+          navigate("/");
         }
       })
       .catch((err) => console.log(err));

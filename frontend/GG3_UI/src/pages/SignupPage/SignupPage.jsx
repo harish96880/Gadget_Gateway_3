@@ -10,19 +10,50 @@ function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [validationErrors, setValidationErrors] = useState([]);
+
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8000/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-      })
-      .then(navigate("/login"))
-      .catch((err) => console.log(err));
+    if (validationErrors.length == 0) {
+      axios
+        .post("http://localhost:8000/register", {
+          firstName,
+          lastName,
+          email,
+          password,
+        })
+        .then(navigate("/login"))
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const passwordHandleChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    // Password validation
+    const errors = [];
+    if (newPassword.length < 6 || newPassword.length > 12) {
+      errors.push("Password must be between 6 and 12 characters.");
+    }
+    if (!/[A-Z]/.test(newPassword)) {
+      errors.push("Password must contain at least one uppercase letter.");
+    }
+    if (!/[!@#$%^&*()_+[\]{};':"\\|,.<>?]/.test(newPassword)) {
+      errors.push("Password must contain at least one special character.");
+    }
+    if (!/\d/.test(newPassword)) {
+      errors.push("Password must contain at least one number.");
+    }
+    setValidationErrors(errors);
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -83,14 +114,23 @@ function SignupPage() {
           </div>
           <div className="form-group">
             <input
-              type="password"
-              className="form-control input-lg text-dark"
+              type={showPassword ? "text" : "password"}
+              className="form-control input-lg text-dark mb-2"
               name="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={passwordHandleChange}
               placeholder="Password"
               required="required"
             />
+            <input type="checkbox" onChange={toggleShowPassword} />
+            &nbsp;show password
+            <ul>
+              {validationErrors.map((error, index) => (
+                <li key={index} style={{ color: "yellow" }}>
+                  {error}
+                </li>
+              ))}
+            </ul>
           </div>
           <div className="form-group">
             <button
