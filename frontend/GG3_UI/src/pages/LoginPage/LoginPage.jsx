@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LoginPage.css";
 import CustomNavbar from "../../components/CustomNavbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginPage() {
+  axios.defaults.withCredentials = true;
+
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`http://localhost:8000/login`, {
+        email,
+        password,
+      })
+      .then((res) => {
+        if (res.data.role === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/home");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <section>
       <CustomNavbar />
       <div className="signup-form my-5">
-        <form>
+        <form onSubmit={handleSubmit}>
           <h2 className="text-white">Login with your credentials</h2>
           <p className="hint-text">
             Log in with your social media account or email address
@@ -30,8 +54,10 @@ function LoginPage() {
           <div className="form-group">
             <input
               type="email"
-              className="form-control input-lg"
+              className="form-control input-lg text-dark"
               name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Email Address"
               required="required"
             />
@@ -39,8 +65,10 @@ function LoginPage() {
           <div className="form-group">
             <input
               type="password"
-              className="form-control input-lg"
+              className="form-control input-lg text-dark"
               name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required="required"
             />

@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SignupPage.css";
 import CustomNavbar from "../../components/CustomNavbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SignupPage() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:8000/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      })
+      .then(navigate("/login"))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <section>
       <CustomNavbar />
       <div className="signup-form my-5">
-        <form>
+        <form onSubmit={handleSubmit}>
           <h2 className="text-white">Create Account</h2>
           <p className="hint-text">
             Signup with your social media account or email address
@@ -27,20 +48,24 @@ function SignupPage() {
           <div className="or-seperator">
             <b>or</b>
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="text"
-              class="form-control input-lg"
-              name="firstname"
+              className="form-control input-lg text-dark"
+              name="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               placeholder="Firstname"
               required="required"
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="text"
-              class="form-control input-lg"
-              name="lastname"
+              className="form-control input-lg text-dark"
+              name="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               placeholder="Lastname"
               required="required"
             />
@@ -48,8 +73,10 @@ function SignupPage() {
           <div className="form-group">
             <input
               type="email"
-              className="form-control input-lg"
+              className="form-control input-lg text-dark"
               name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Email Address"
               required="required"
             />
@@ -57,8 +84,10 @@ function SignupPage() {
           <div className="form-group">
             <input
               type="password"
-              className="form-control input-lg"
+              className="form-control input-lg text-dark"
               name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required="required"
             />
