@@ -1,3 +1,4 @@
+//Required Node js modules
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
@@ -8,13 +9,12 @@ const UserModel = require("./models/user");
 const Token = require("./models/Token");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
-const { log } = require("console");
-const { v4: uuidv4 } = require("uuid");
 
+//Environment Variables
 require("dotenv").config();
 
+//Middlewares
 const app = express();
-
 app.use(cookieParser());
 app.use(express.json());
 app.use(
@@ -25,28 +25,16 @@ app.use(
   })
 );
 
+//Database Connection
 mongoose.connect("mongodb://localhost:27017/GG3");
 
-// let transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: process.env.AUTH_MAIL,
-//     pass: process.env.AUTH_PASS,
-//   },
-// });
-
-// transporter.verify((error, success) => {
-//   console.log(process.env.AUTH_MAIL);
-//   console.log(process.env.AUTH_PASS);
-//   if (error) console.log(error);
-//   else console.log("Readyyyy");
-// });
-
+//Routes
 app.get("/", (req, res) => {
-  res.send("Hello");
+  res.send("Hello"); //for checking connection
 });
 
 app.get("/users/confirm/:id", async (req, res) => {
+  // For email verification
   try {
     const token = await Token.findOne({ token: req.params.id });
     await UserModel.updateOne(
