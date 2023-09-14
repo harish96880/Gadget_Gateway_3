@@ -93,7 +93,7 @@ const verifyEmail = async (email, link) => {
     </div>
       `,
     });
-    console.log("Email send");
+    console.log("Email sent!!!");
   } catch (error) {
     console.log(error);
   }

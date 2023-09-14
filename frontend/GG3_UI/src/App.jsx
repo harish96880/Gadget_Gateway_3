@@ -4,6 +4,8 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import Home from "./pages/Home/Home";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import Page404 from "./pages/404/Page404";
+import EmailSentPage from "./pages/EmailSentPage/EmailSentPage";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
+        <Route path="/emailSent" element={<EmailSentPage />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );

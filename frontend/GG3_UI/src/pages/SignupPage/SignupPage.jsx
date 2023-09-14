@@ -32,7 +32,7 @@ function SignupPage() {
             return setEmailExist(true);
           }
           setEmailExist(false);
-          navigate("/login");
+          navigate("/emailSent");
         })
         .catch((err) => console.log(err));
     }
