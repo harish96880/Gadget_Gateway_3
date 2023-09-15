@@ -13,6 +13,8 @@ function LoginPage() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [checkPassword, setCheckPassword] = useState(false);
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -26,12 +28,17 @@ function LoginPage() {
       })
       .then((res) => {
         console.log(res.data);
-        if (res.data.role === "admin" && res.data.verified) {
-          navigate("/dashboard");
-        } else if (res.data.verified) {
-          navigate("/home");
+        if (res.data === "Password is incorrect") {
+          setCheckPassword(true);
         } else {
-          navigate("/");
+          setCheckPassword(false);
+          if (res.data.role === "admin" && res.data.verified) {
+            navigate("/dashboard");
+          } else if (res.data.verified) {
+            navigate("/home");
+          } else {
+            navigate("/");
+          }
         }
       })
       .catch((err) => console.log(err));
@@ -84,6 +91,11 @@ function LoginPage() {
             <input type="checkbox" onChange={toggleShowPassword} />
             &nbsp; Show password
           </div>
+          {checkPassword && (
+            <div className="alert alert-danger" role="alert">
+              Invalid email or password
+            </div>
+          )}
           <div className="form-group">
             <button
               type="submit"
@@ -94,6 +106,12 @@ function LoginPage() {
             </button>
           </div>
         </form>
+        <div className="text-center text-white">
+          Forgot Password?
+          <Link to="/passwordMailingPage" style={{ color: "orange" }}>
+            click here
+          </Link>
+        </div>
         <div className="text-center text-white">
           New to GG3?
           <Link to="/signup" style={{ color: "orange" }}>

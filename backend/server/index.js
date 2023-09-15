@@ -42,9 +42,26 @@ app.get("/users/confirm/:id", async (req, res) => {
       { $set: { verified: true } }
     );
     await Token.findByIdAndRemove(token._id);
-    res.send("Email verified");
+    res.redirect("http://localhost:5173/emailVerified");
   } catch (error) {
-    res.send("Email Not verified");
+    res.redirect("http://localhost:5173/emailNotVerified");
+  }
+});
+
+app.post("/get/datafor/:token", async (req, res) => {
+  // For password reset
+  console.log(req.body.password);
+  try {
+    const token = await Token.findOne({ token: req.params.token });
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    await UserModel.updateOne(
+      { _id: token.userId },
+      { $set: { password: hashedPassword } }
+    );
+    await Token.findByIdAndRemove(token._id);
+    return res.json("successpwd");
+  } catch (error) {
+    return console.log(error);
   }
 });
 
@@ -87,6 +104,45 @@ const verifyEmail = async (email, link) => {
   }
 };
 
+const emailSentForPasswordRec = async (email, link) => {
+  try {
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.AUTH_MAIL,
+        pass: process.env.AUTH_PASS,
+      },
+    });
+
+    let info = await transporter.sendMail({
+      from: "sriharishr105@gmail.com",
+      to: email,
+      subject: "Reset Password - Gadget Gateway 3",
+      text: "Password Reset approval",
+      html: `
+      <div>
+      <a
+        href=${link}
+        style="
+          background-color: rgb(35, 141, 255);
+          padding: 15px;
+          text-decoration: none;
+          color: white;
+          font-weight: 900;
+          font-family: monospace;
+          border-radius: 12px;
+        "
+        >Click here to reset your password</a
+      >
+    </div>
+      `,
+    });
+    console.log("Email sent!!!");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
@@ -108,6 +164,25 @@ const verifyUser = (req, res, next) => {
 
 app.get("/dashboard", verifyUser, (req, res) => {
   res.json("success");
+});
+
+app.post("/emailpasswordreset", (req, res) => {
+  const email = req.body.email;
+  UserModel.findOne({ email: email }).then((user) => {
+    if (!user) {
+      console.log("No records");
+    } else {
+      const token = new Token({
+        userId: user._id,
+        token: crypto.randomBytes(16).toString("hex"),
+      });
+      token.save();
+      console.log(token);
+      const link = `http://localhost:5173/reset/password/${token.token}`;
+      emailSentForPasswordRec(user.email, link);
+      res.json("Email Sent");
+    }
+  });
 });
 
 app.post("/register", (req, res) => {
