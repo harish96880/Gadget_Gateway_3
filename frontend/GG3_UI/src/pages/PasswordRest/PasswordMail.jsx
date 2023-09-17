@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./PasswordMail.css";
+import { Link } from "react-router-dom";
 
 function PasswordMail() {
   const [email, setEmail] = useState("");
@@ -13,28 +15,49 @@ function PasswordMail() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="email"
-          className="form-control input-lg text-dark"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          required="required"
-        />
-      </div>
-      <div className="form-group">
-        <button
-          type="submit"
-          className="btn btn-lg btn-block signup-btn"
-          style={{ backgroundColor: "rgb(255, 98, 0)" }}
+    <>
+      <div className="containerForm">
+        <Link
+          className="navbar-brand text-white my-5"
+          style={{
+            textDecoration: "none",
+            fontSize: "2vw",
+            fontWeight: 300,
+            margin: 5,
+          }}
+          to={"/"}
         >
-          Get mail
-        </button>
+          Gadget Gateway 3
+        </Link>
+        <div className="containerContent">
+          <div className="cardForm">
+            <h3 className="h4 text-white mb-4">Reset verification link</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  className="form-control input-lg text-dark mb-2"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <button
+                  type="submit"
+                  className="btn btn-block signup-btn"
+                  style={{ backgroundColor: "rgb(255, 98, 0)" }}
+                >
+                  Get mail
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-    </form>
+    </>
   );
 }
 

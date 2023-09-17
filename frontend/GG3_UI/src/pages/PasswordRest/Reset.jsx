@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import "./Reset.css";
 
 function Reset() {
   const { id } = useParams();
@@ -49,37 +50,63 @@ function Reset() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type={showPassword ? "text" : "password"}
-          className="form-control input-lg text-dark mb-2"
-          name="password"
-          value={password}
-          onChange={passwordHandleChange}
-          placeholder="Enter your new password"
-          required="required"
-        />
-        <input type="checkbox" onChange={toggleShowPassword} />
-        &nbsp; Show password
-      </div>
-      <ul>
-        {validationErrors.map((error, index) => (
-          <li key={index} style={{ color: "black" }}>
-            {error}
-          </li>
-        ))}
-      </ul>
-      <div className="form-group">
-        <button
-          type="submit"
-          className="btn btn-lg btn-block signup-btn"
-          style={{ backgroundColor: "rgb(255, 98, 0)" }}
+    <>
+      <div className="containerForm">
+        <Link
+          className="navbar-brand text-white my-5"
+          style={{
+            textDecoration: "none",
+            fontSize: "2vw",
+            fontWeight: 300,
+            margin: 5,
+          }}
+          to={"/"}
         >
-          Change password
-        </button>
+          Gadget Gateway 3
+        </Link>
+        <div className="containerContent">
+          <div className="cardForm">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control input-lg text-dark mb-2"
+                  name="password"
+                  value={password}
+                  onChange={passwordHandleChange}
+                  placeholder="Enter your new password"
+                  required="required"
+                />
+                <input
+                  type="checkbox"
+                  name="showPassword"
+                  onChange={toggleShowPassword}
+                />
+                <label htmlFor="showPassword" className="text-white">
+                  &nbsp; Show password
+                </label>
+              </div>
+              <ul>
+                {validationErrors.map((error, index) => (
+                  <li key={index} style={{ color: "yellow" }}>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+              <div className="form-group">
+                <button
+                  type="submit"
+                  className="btn btn-lg btn-block signup-btn"
+                  style={{ backgroundColor: "rgb(255, 98, 0)" }}
+                >
+                  Change password
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-    </form>
+    </>
   );
 }
 

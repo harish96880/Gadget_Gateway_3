@@ -109,13 +109,13 @@ function LoginPage() {
         <div className="text-center text-white">
           Forgot Password?
           <Link to="/passwordMailingPage" style={{ color: "orange" }}>
-            click here
+            &nbsp;Click here
           </Link>
         </div>
         <div className="text-center text-white">
           New to GG3?
           <Link to="/signup" style={{ color: "orange" }}>
-            Register here
+            &nbsp;Register here
           </Link>
         </div>
       </div>
