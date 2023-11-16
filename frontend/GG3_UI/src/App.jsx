@@ -11,6 +11,7 @@ import EmailNotVerified from "./pages/EmailVerification/EmailNotVerified";
 import PasswordMail from "./pages/PasswordRest/PasswordMail";
 import Reset from "./pages/PasswordRest/Reset";
 import SuccessfullyPwd from "./pages/PasswordRest/SuccessfullyPwd";
+import UserHomePage from "./pages/UserHomePage/UserHomePage";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/h" element={<UserHomePage />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
         <Route path="/emailSent" element={<EmailSentPage />} />
         <Route path="/emailVerified" element={<EmailVerified />} />
